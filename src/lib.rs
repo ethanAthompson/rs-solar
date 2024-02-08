@@ -70,3 +70,6 @@ pub mod anomaly;
 
 /// This module contains julian operations
 pub mod julian;
+
+/// This module contains utilities that I wouldn't know where to put elsewhere.
+pub mod utils;
