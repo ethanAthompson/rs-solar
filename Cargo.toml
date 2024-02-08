@@ -1,16 +1,19 @@
 [package]
 name = "rust_solar"
-version = "0.1.0"
+version = "0.0.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+repository = "https://github.com/ethanAthompson/rs-solar"
+license = "MIT"
+description = "Date-time solutions for hypothetical cosmic calendars"
+homepage = "https://github.com/ethanAthompson/rs-solar"
 
 [dependencies]
 chrono = "0.4.31"
 chrono-tz = "0.8.5"
 icu = "1.4.0"
 icu_calendar = "1.4.0"
-rstest = "0.18.2"
 displaydoc = "0.2.4"
-strum = { version = "0.25.0", features = ["strum_macros", "derive"] }
+strum = { version = "0.26.1", features = ["strum_macros", "derive"] }
 julian_day_converter = "0.3.2"
+thiserror = "1.0.56"
+rust-latex-doc-minimal-example = "0.2.0"
