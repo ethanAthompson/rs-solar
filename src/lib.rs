@@ -28,16 +28,18 @@
 //! (Geometry of Orbits)[https://www.bogan.ca/orbits/geometry.html]
 //! (Julian Date Converter)[https://aa.usno.navy.mil/data/JulianDate]
 //! - (Semi Latus Rectum of Parabola or Hyperbola)[https://www.orbiter-forum.com/threads/how-calculate-semi-latus-rectum-of-parabola-or-hyperbola.40315/]
-//!     > Semi-Latus Rectum equation by Kolodez 
+//!     > Semi-Latus Rectum equation by Kolodez
 //! (Orbital Periods)[https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Solar_system_orbital_period_vs_semimajor_axis.svg/800px-Solar_system_orbital_period_vs_semimajor_axis.svg.png]
 //! (Astronomy Calculations)[https://docs.google.com/spreadsheets/d/1rwc2mVxyHuUEou_hxnG6kzl24XdqqmIAS5_1nJDpJ6o/edit#gid=1479831395]
-//! 
-//! 
-//! (Use this, don't show to library)[https://github.com/ethanAthompson/rs-solar/blob/main/backups/src-1/planets/mars/body.rs#L88]
-//! 
-//! 
-//! 
-//! 
+//! (Mars Clock)[https://marsclock.com/]
+//! (Orbits)[https://jtauber.github.io/orbits/]
+//!
+//!
+//! (Use this, don't show to library)[https://github.com/ethanAthompson/rs-solar/blob/824ccd87f4fa3a9bbe03fefc1225ae125a7b70af/backups/src-1/planets/mars/body.rs]
+//!
+//!
+//!
+//!
 //! # Features
 //!
 //!  - `asteroids` : Brings asteroid support
@@ -48,7 +50,7 @@
 //!
 //!    To use features maybe?
 //!    (https://stackoverflow.com/questions/27454761/what-is-a-crate-attribute-and-where-do-i-add-it)
-//! 
+//!
 //! ** Warning! **, Please know this may not be 100% accurate as these data rely on 30% hypothetical data.
 //!
 //!
@@ -70,6 +72,3 @@ pub mod anomaly;
 
 /// This module contains julian operations
 pub mod julian;
-
-/// This module contains utilities that I wouldn't know where to put elsewhere.
-pub mod utils;

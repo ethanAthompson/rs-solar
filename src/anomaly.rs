@@ -1,4 +1,4 @@
-use crate::{conversions::radians_in_circle, orbit::{self, Perihelion, SemiAxis}, planets::EARTH_ORBITAL_PERIOD};
+use crate::orbit::{self, MeanMotion, Perihelion, SemiAxis};
 
 #[derive(Debug, Clone, Copy)]
 /// This represents ways of describing an object in its orbit
@@ -6,19 +6,8 @@ pub struct Anomaly;
 
 impl Anomaly {
     /// (Mean Anomaly) Calculates the period since the last periapsis.
-    ///
-    /// * Mean Motion Equation
-    /// > $$n={\frac {2\pi }{P}}$$
-    ///
-    /// - `n` is the mean motion
-    /// - `P` is the orbital period
-    ///
-    pub fn mean(self, mean_motion: f64) -> f64 {
-        println!("mean motion2 : {:?}", mean_motion);
-
-        // a problem lies in this method,
-        // you never actually use the mean motion, you use the day maybe. 
-        mean_motion.abs()
+    pub fn mean(self, day: f64, peri: Perihelion, orbital_period: f64) -> f64 {
+        MeanMotion.by(day, peri, orbital_period).abs()
     }
 
     /// (Eccentric Anomaly) Calculates the body's position along its orbital path.
@@ -40,14 +29,16 @@ impl Anomaly {
     pub fn eccentric(
         self,
         shape: crate::orbit::Type,
-        mean_motion: f64,
+        day: f64,
         orbital_eccentricity: f64,
-        major_axis: f64
+        peri: Perihelion,
+        orbital_period: f64,
+        major_axis: f64,
     ) -> f64 {
         match shape {
             orbit::Type::Circular => {
                 // Mean Anomaly
-                let xref = self.mean(mean_motion);
+                let xref = self.mean(day, peri, orbital_period);
 
                 // v = M = E
                 xref
@@ -57,7 +48,7 @@ impl Anomaly {
                 let mut pdx = 10.0;
 
                 // Mean Anomaly
-                let xref = self.mean(mean_motion);
+                let xref = self.mean(day, peri, orbital_period);
 
                 // Initial Parabolic Anomaly
                 let mut px0 = xref;
@@ -67,10 +58,11 @@ impl Anomaly {
                     let x0 = px0.powf(3.0);
                     let x1 = 6.0;
 
-                    pdx =  x0 / x1;
-                    
+                    pdx = x0 / x1;
+
                     // Semi-Latus Rectum ( semji-major-axis * (1.0 - eccentricity^2))
-                    let p = SemiAxis(major_axis).major() * (1.0_f64 - orbital_eccentricity.powf(2.0));
+                    let p =
+                        SemiAxis(major_axis).major() * (1.0_f64 - orbital_eccentricity.powf(2.0));
 
                     // (Perifocal Distance) q = p/2
                     let q = p / 2.0;
@@ -79,6 +71,7 @@ impl Anomaly {
                     px0 = (q * px0) + pdx;
                 }
 
+                let mean_motion = MeanMotion.by(day, peri, orbital_period);
                 // makes sure that the mean motion isn't negative
                 if mean_motion < 0.0 {
                     px0 = -px0;
@@ -91,7 +84,7 @@ impl Anomaly {
                 let mut hdx = 10.0;
 
                 // Mean Anomaly
-                let xref = self.mean(mean_motion);
+                let xref = self.mean(day, peri, orbital_period);
 
                 // Initial Hyperbolic Anomaly
                 let mut hx0 = xref;
@@ -111,6 +104,8 @@ impl Anomaly {
                     hx0 = hx0 + hdx;
                 }
 
+                let mean_motion = MeanMotion.by(day, peri, orbital_period);
+
                 // makes sure that the mean motion isn't negative
                 if mean_motion < 0.0 {
                     hx0 = -hx0;
@@ -123,19 +118,14 @@ impl Anomaly {
                 let mut zdx: f64 = 10.0;
 
                 // Mean Anomaly
-                let xref = self.mean(mean_motion);
-
- 
-                println!("Mean Motion?Day: {:?} ", mean_motion);
-
+                let xref = self.mean(day, peri, orbital_period);
 
                 // Initial Eccentric Anomaly
                 let mut zx0 = xref + orbital_eccentricity * xref.sin();
 
-
                 // Newtons Iterative step
                 while zdx > 1.0e-7 {
-                    let x0 = -(zx0 - orbital_eccentricity) * zx0.sin() - xref;
+                    let x0 = -(zx0 - orbital_eccentricity * zx0.sin() - xref);
                     let x1 = 1.0 - orbital_eccentricity * zx0.cos();
 
                     // En = - ((En - e * En.sin() - M(t)) / 1 - e * En.cos() )
@@ -146,12 +136,14 @@ impl Anomaly {
                     zx0 = zx0 + zdx;
                 }
 
+                let mean_motion = MeanMotion.by(day, peri, orbital_period);
+
                 // makes sure that the mean motion isn't negative
                 if mean_motion < 0.0 {
                     zx0 = -zx0;
                 }
-                
 
+                // println!("zx0: {:?}", zx0);
 
                 zx0
             }
@@ -166,39 +158,63 @@ impl Anomaly {
     ///
     /// * Hyperbolic (Eccentric) Anomaly
     /// >  $$(\frac{e+1}{e-1})^{1/2}  \tanh(\frac{H}{2})$$
-    /// 
+    ///
     /// * Parabolic (Eccentric) Anomaly
     /// >  $$D = D/\sqrt{2q}$$
-    /// 
+    ///
     /// * Circular (Eccentric) Anomaly
     /// >  $$nt = M(t)$$
     /// >  $$M = M_0 + nt$$
-    /// 
+    ///
     pub fn truly(
         self,
-        mean_motion: f64,
         shape: crate::orbit::Type,
+        day: f64,
         orbital_eccentricity: f64,
-        major_axis: f64
-
+        peri: Perihelion,
+        orbital_period: f64,
+        major_axis: f64,
     ) -> f64 {
         match shape {
             orbit::Type::Circular => {
-                let mut theta = self.eccentric(orbit::Type::Circular, mean_motion, orbital_eccentricity, major_axis);
+                let mut theta: f64 = self.eccentric(
+                    shape,
+                    day,
+                    orbital_eccentricity,
+                    peri,
+                    orbital_period,
+                    major_axis,
+                );
+
+                let mean_motion = MeanMotion.by(day, peri, orbital_period);
 
                 theta = theta + mean_motion;
 
                 theta
             }
             orbit::Type::Parabolic => {
-                let theta = self.eccentric(orbit::Type::Parabolic, mean_motion, orbital_eccentricity, major_axis);
+                let theta: f64 = self.eccentric(
+                    shape,
+                    day,
+                    orbital_eccentricity,
+                    peri,
+                    orbital_period,
+                    major_axis,
+                );
                 let p = 0.0;
                 let q = p / 2.0_f64;
 
                 theta / (2.0_f64 * q).sqrt()
             }
             orbit::Type::Hyperbolic => {
-                let theta = self.eccentric(orbit::Type::Hyperbolic, mean_motion, orbital_eccentricity, major_axis);
+                let theta: f64 = self.eccentric(
+                    shape,
+                    day,
+                    orbital_eccentricity,
+                    peri,
+                    orbital_period,
+                    major_axis,
+                );
 
                 // tan v/2 = (e+1/e-1)^1/2 * tanh(F/2)
                 // `where F = H`
@@ -206,10 +222,21 @@ impl Anomaly {
                     * (theta / 2.0).tanh()
             }
             orbit::Type::Elliptical => {
-                let theta = self.eccentric(shape, mean_motion, orbital_eccentricity, major_axis);
-                let mean_motion2 = ((1.0 + orbital_eccentricity) / (1.0 - orbital_eccentricity)).sqrt();
+                let theta: f64 = self.eccentric(
+                    shape,
+                    day,
+                    orbital_eccentricity,
+                    peri,
+                    orbital_period,
+                    major_axis,
+                );
 
-                2.0 * (mean_motion2 * (theta / 2.0).tan()).atan()
+                // println!("zx0: {:?}", theta);
+
+                let mean_motion =
+                    ((1.0 + orbital_eccentricity) / (1.0 - orbital_eccentricity)).sqrt();
+
+                2.0 * (mean_motion * (theta / 2.0).tan()).atan()
             }
             _ => 0.0,
         }

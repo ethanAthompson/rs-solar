@@ -1,3 +1,5 @@
+/// This module contains earth calculations
+pub mod earth;
 /// This module contains jupiter calculations
 pub mod jupiter;
 /// This module contains mars calculations
@@ -15,9 +17,8 @@ pub mod uranus;
 /// This module contains venus calculations
 pub mod venus;
 
-
 /// This is the rotational period for earth in seconds
-pub const EARTH_ROTATIONAL_PERIOD: f64 =  86400.0;
+pub const EARTH_ROTATIONAL_PERIOD: f64 = 86400.0;
 
 /// This is the orbital period for earth in days
 pub const EARTH_ORBITAL_PERIOD: f64 = 365.25;

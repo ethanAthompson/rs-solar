@@ -34,7 +34,7 @@ cargo add rust solar -F asteroids planets moons exoplanets comets
 
 ### Planets
 - [ ] Earth
-- [ ] Mars
+- [x] Mars
 - [ ] Mercury
 - [ ] Neptune
 - [ ] Jupiter

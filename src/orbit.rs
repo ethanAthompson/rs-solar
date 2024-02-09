@@ -1,4 +1,4 @@
-use crate::conversions::radians_in_circle;
+use crate::{anomaly::Anomaly, conversions::radians_in_circle};
 use strum::AsRefStr;
 
 #[derive(Debug, Default, Clone, Copy)]
@@ -46,6 +46,8 @@ pub struct Perihelion {
 
 impl Perihelion {
     /// The days since the the perihelion by the orbital_period and day in planet
+    /// orbital_period is the body's orbital period, not the earth.
+    ///
     pub fn elapse(&mut self, day: f64, orbital_period: f64) -> f64 {
         (day - self.date()) / orbital_period
     }
@@ -73,22 +75,40 @@ impl Perihelion {
 
 #[derive(Debug, Copy, Clone)]
 /// This is the data for calculating solar longitude among orbiting bodies.
-pub struct SolarLongitude(pub f64);
+pub struct SolarLongitude;
 
 impl SolarLongitude {
     /// This method computes the ls which should be given by [`kepler::Body`].
     /// * The final computation is in *degrees*
     ///
-    pub fn compute(&mut self) -> f64 {
-        if self.0 < 0.0 {
-            self.0 += radians_in_circle();
+    pub fn compute(
+        &self,
+        shape: Type,
+        day: f64,
+        orbital_eccentricity: f64,
+        mut peri: Perihelion,
+        orbital_period: f64,
+        major_axis: f64,
+    ) -> f64 {
+        let theta = Anomaly.truly(
+            shape,
+            day,
+            orbital_eccentricity,
+            peri,
+            orbital_period,
+            major_axis,
+        );
+        let mut ls = theta - peri.time();
+
+        if ls < 0.0 {
+            ls += radians_in_circle();
         }
 
-        if self.0 > radians_in_circle() {
-            self.0 -= radians_in_circle();
+        if ls > radians_in_circle() {
+            ls -= radians_in_circle();
         }
 
-        self.0.to_degrees()
+        ls.to_degrees()
     }
 }
 
@@ -110,7 +130,7 @@ impl SemiAxis {
     /// use crate::rust_solar::planets::mars::Mars;
     /// use crate::rust_solar::kepler::Body;
     /// use crate::rust_solar::orbit::SemiAxis;
-    /// 
+    ///
     /// let martian_semi_minor_axis = SemiAxis(Mars.semimajor()).minor(Mars.orbital_eccentricity());
     ///
     /// assert_eq!(1.5067401888, martian_semi_minor_axis)
@@ -121,16 +141,14 @@ impl SemiAxis {
     }
 }
 
-
-
-/// The colelction of seasons in which all keplerian bodies follow
+/// The collection of seasons in which all keplerian bodies follow
 #[derive(AsRefStr, Debug, Default, Copy, Clone)]
 pub enum Season {
     /// March 19th
     #[strum(serialize = "Vernal Equinox")]
     VernalEquinox,
 
-    /// July 6 
+    /// July 6
     #[strum(serialize = "Aphelion")]
     Aphelion,
 
@@ -160,16 +178,35 @@ pub enum Season {
 impl Season {
     /// This method creates a season given a solar longitude.
     pub fn from(&self, ls: u32) -> String {
-        match ls  {
+        match ls {
             71 => Self::Aphelion,
             251 => Self::Perihelion,
             0..=90 => Self::VernalEquinox,
             91..=180 => Self::SummerSolstice,
             181..=270 => Self::AutumnEquinox,
             271..=360 => Self::WinterSolstice,
-            _ => Self::Unknown
+            _ => Self::Unknown,
         }
         .as_ref()
         .to_string()
+    }
+}
+
+/// The mean motion where all bodies share
+#[derive(Debug, Default, Copy, Clone)]
+pub struct MeanMotion;
+
+impl MeanMotion {
+    /// This method abstracts the ability to calculate the mean motion
+    ///
+    /// * Mean Motion Equation
+    /// > $$n={\frac {2\pi }{P}}$$
+    ///
+    /// - `n` is the mean motion
+    /// - `P` is the orbital period
+    pub fn by(&mut self, day: f64, mut peri: Perihelion, orbital_period: f64) -> f64 {
+        let elapse = Perihelion::elapse(&mut peri, day, orbital_period);
+
+        radians_in_circle() * (elapse - elapse.round())
     }
 }
