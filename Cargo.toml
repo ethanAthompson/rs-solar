@@ -1,6 +1,6 @@
 [package]
 name = "rust_solar"
-version = "0.1.75"
+version = "0.1.77"
 edition = "2021"
 repository = "https://github.com/ethanAthompson/rs-solar"
 license = "MIT"
@@ -25,3 +25,9 @@ asteroids = []
 comets = []
 moons = []
 exoplanets = []
+
+[build]
+rustdocflags = [ "--html-in-header", "./src/docs-header.html" ]
+
+[package.metadata.docs.rs]
+rustdoc-args = [ "--html-in-header", "./src/docs-header.html" ]
