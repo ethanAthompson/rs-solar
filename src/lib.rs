@@ -47,23 +47,23 @@
 //!
 
 /// This module contains calculations for supported asteroids
-// #[cfg(feature="asteroids")]
+#[cfg(feature="asteroids")]
 pub mod asteroids;
 
 /// This module contains calculations for supported comets
-// #[cfg(feature="comets")]
+#[cfg(feature="comets")]
 pub mod comets;
 
 /// This module contains calculations for supported exoplanets
-// #[cfg(feature="exoplanets")]
+#[cfg(feature="exoplanets")]
 pub mod exoplanets;
 
 /// This module contains calculations for supported moons
-// #[cfg(feature="moons")]
+#[cfg(feature="moons")]
 pub mod moons;
 
 /// This module contains calculations for supported planets
-// #[cfg(feature="planets")]
+#[cfg(feature="planets")]
 pub mod planets;
 
 /// This module contains common kepler data

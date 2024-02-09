@@ -1,6 +1,6 @@
 [package]
 name = "rust_solar"
-version = "0.1.5"
+version = "0.1.55"
 edition = "2021"
 repository = "https://github.com/ethanAthompson/rs-solar"
 license = "MIT"
@@ -19,4 +19,8 @@ thiserror = "1.0.56"
 rust-latex-doc-minimal-example = "0.2.0"
 
 [features]
-default = ["planets", "asteroids", "moons", "exoplanets", "comets"]
+planets = []
+asteroids = []
+comets = []
+moons = []
+exoplanets = []
