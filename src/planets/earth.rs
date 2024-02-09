@@ -1,4 +1,4 @@
-use chrono::{Datelike, NaiveDate};
+use chrono::{Datelike, Local, NaiveDate, Utc};
 use icu::datetime::input::{DateInput, IsoTimeInput};
 use icu_calendar::{ethiopian::EthiopianEraStyle, types::Era, AsCalendar};
 use std::str::FromStr;
@@ -70,6 +70,51 @@ pub struct EarthDateTime {
     pub codes: EarthCodes,
     /// This is the earths' time
     pub time: EarthTime,
+}
+
+impl EarthDateTime {
+    /// This method sets a date time given the input
+    pub fn set_datetime(input: String) -> Vec<(String, String)> {
+        if let Ok(time) = chrono_tz::Tz::from_str(input.as_str()) {
+            let time = chrono::DateTime::with_timezone(&Utc::now(), &time).format("%Y/%m/%d %r %Z");
+            vec![(input, time.to_string())]
+        } else {
+            let name = Local::now()
+                .with_timezone(&Local::now().timezone())
+                .to_string();
+            let time = Local::now().format("%Y/%m/%d %r %Z");
+
+            vec![(name, time.to_string())]
+        }
+    }
+}
+
+#[derive(Debug, Default, Copy, Clone)]
+/// This is a structure that represents earth timezones
+pub struct EarthTimeZones;
+
+impl EarthTimeZones {
+    /// Returns all timezones from chrono database
+    pub fn all_timezones(mut list: Vec<String>) -> Vec<String> {
+        for variant in chrono_tz::TZ_VARIANTS.iter() {
+            list.push(variant.to_string())
+        }
+
+        list
+    }
+}
+
+/** ## This is a declarative macro that abstracts the [`EarthDateTime::set_datetime`] method.
+  
+    > Takes in a location which returns the datetime + timezone for that location. 
+*/
+#[macro_export]
+macro_rules! set_datetimes {
+    ($($location: expr), *) => {
+        $(
+            super::set_datetime($location.clone());
+        )*
+    };
 }
 
 /** This is a declarative macro wrapper that containerizes a calendar type.
@@ -607,7 +652,7 @@ impl RustSolarCalendar {
     pub fn get_cc<T: AsCalendar>(self, d: T) -> T {
         d
     }
-    
+
     /// ## Constructs an earth datetime from calendar type
     ///
     /// > The Generic is used to automatically assign the proper date mechanisms to the generic calendar type given.
