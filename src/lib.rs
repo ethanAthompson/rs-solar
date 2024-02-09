@@ -13,8 +13,9 @@
 
 //! # Rust Solar Information
 //!
+//! ** Warning! **, Please know this may not be 100% accurate as these data rely on 30% hypothetical data.
 //!
-//! Rust Solar is a full fledged library to help programmers, utilize calendar, date, and time for celestial bodies
+//! > Rust Solar is a full fledged library to help programmers, utilize calendar, date, and time for celestial bodies
 //! in their application.
 //!
 //! # References Used
@@ -35,11 +36,6 @@
 //! (Orbits)[https://jtauber.github.io/orbits/]
 //!
 //!
-//! (Use this, don't show to library)[https://github.com/ethanAthompson/rs-solar/blob/824ccd87f4fa3a9bbe03fefc1225ae125a7b70af/backups/src-1/planets/mars/body.rs]
-//!
-//!
-//!
-//!
 //! # Features
 //!
 //!  - `asteroids` : Brings asteroid support
@@ -48,14 +44,26 @@
 //!  - `comets`: Brings comet support
 //!  - `moons`: Brings moon support
 //!
-//!    To use features maybe?
-//!    (https://stackoverflow.com/questions/27454761/what-is-a-crate-attribute-and-where-do-i-add-it)
-//!
-//! ** Warning! **, Please know this may not be 100% accurate as these data rely on 30% hypothetical data.
-//!
 //!
 
+/// This module contains calculations for supported asteroids
+// #[cfg(feature="asteroids")]
+pub mod asteroids;
+
+/// This module contains calculations for supported comets
+// #[cfg(feature="comets")]
+pub mod comets;
+
+/// This module contains calculations for supported exoplanets
+// #[cfg(feature="exoplanets")]
+pub mod exoplanets;
+
+/// This module contains calculations for supported moons
+// #[cfg(feature="moons")]
+pub mod moons;
+
 /// This module contains calculations for supported planets
+// #[cfg(feature="planets")]
 pub mod planets;
 
 /// This module contains common kepler data

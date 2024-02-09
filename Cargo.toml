@@ -17,3 +17,6 @@ strum = { version = "0.26.1", features = ["strum_macros", "derive"] }
 julian_day_converter = "0.3.2"
 thiserror = "1.0.56"
 rust-latex-doc-minimal-example = "0.2.0"
+
+[features]
+default = ["planets", "asteroids", "moons", "exoplanets", "comets"]
