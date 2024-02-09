@@ -19,6 +19,7 @@ thiserror = "1.0.56"
 rust-latex-doc-minimal-example = "0.2.0"
 
 [features]
+default = ["planets", "asteroids", "moons", "comets", "exoplanets"]
 planets = []
 asteroids = []
 comets = []
