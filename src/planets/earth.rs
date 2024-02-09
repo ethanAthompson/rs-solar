@@ -112,7 +112,7 @@ impl EarthTimeZones {
 macro_rules! set_datetimes {
     ($($location: expr), *) => {
         $(
-            super::set_datetime($location.clone());
+            EarthDateTime::set_datetime($location.clone());
         )*
     };
 }

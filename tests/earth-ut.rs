@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests {
     use icu_calendar::{chinese::Chinese, julian::Julian, Gregorian};
-    use rust_solar::planets::earth::{EarthDate, RustSolarCalendar};
+    use rust_solar::{planets::earth::{EarthDate, EarthDateTime, EarthTimeZones, RustSolarCalendar}, set_datetimes};
 
     #[test]
     fn julian2chinese_jd_epoch() {
@@ -79,5 +79,25 @@ mod tests {
         let cal_1 = RustSolarCalendar.to_calendar(cal.date, "chinese", Julian::default());
         let cal_2 = RustSolarCalendar.to_calendar(cal_1.date, "julian", Gregorian::default());
         println!("{:?}", cal_2);
+    }
+
+
+    #[test]
+    fn does_all_timezones() {
+        let list = EarthTimeZones::all_timezones(Vec::new());
+        println!("{:?}", list);
+    }
+
+    #[test]
+    fn does_set_datetime() {
+        let dt = EarthDateTime::set_datetime( "America/New_York".to_string());
+        println!("DT : {:?}, {:?}", dt[0].0, dt[0].1);
+    }
+
+    #[test]
+    fn does_set_datetimes() {
+        set_datetimes! {
+            "Japan".to_string(), "EST".to_string(), "APPLE".to_string()
+        };
     }
 }
