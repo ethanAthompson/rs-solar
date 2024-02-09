@@ -1,6 +1,6 @@
 [package]
 name = "rust_solar"
-version = "0.1.55"
+version = "0.1.59"
 edition = "2021"
 repository = "https://github.com/ethanAthompson/rs-solar"
 license = "MIT"
