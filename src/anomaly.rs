@@ -13,17 +13,17 @@ impl Anomaly {
     /// (Eccentric Anomaly) Calculates the body's position along its orbital path.
     ///
     /// * (HKE) Hyperbolic Kepler Equation
-    /// > ![Hyper Bolic Anomaly](https://latex.codecogs.com/svg.image?&space;e\sinh(H)H)
-    /// > ![Hyper Bolic Anomaly 0](https://latex.codecogs.com/svg.image?H_{k&plus;1}=H_k&plus;{\tfrac{M-e\sinh(H_k)&plus;H_k}{e\cosh(H_k)-1}})
+    /// > - ![Hyper Bolic Anomaly](https://latex.codecogs.com/svg.image?&space;e\sinh(H)H)
+    /// > - ![Hyper Bolic Anomaly 0](https://latex.codecogs.com/svg.image?H_{k&plus;1}=H_k&plus;{\tfrac{M-e\sinh(H_k)&plus;H_k}{e\cosh(H_k)-1}})
     ///
     /// * (EKE) Elliptical Kepler Equation
-    /// > ![Mean Anomaly](https://latex.codecogs.com/svg.image?M=E-e\sin&space;E)
-    /// > ![Mean Anomaly Part 2](https://latex.codecogs.com/svg.image?f(E)=E-e\sin(E)-M(t))
+    /// > - ![Mean Anomaly](https://latex.codecogs.com/svg.image?M=E-e\sin&space;E)
+    /// > - ![Mean Anomaly Part 2](https://latex.codecogs.com/svg.image?f(E)=E-e\sin(E)-M(t))
     /// 
     /// * (PKE) Parabolic Kepler Equation
-    /// > ![Parabolic Kepler Equation](https://latex.codecogs.com/svg.image?q=p/2&space;)
-    /// > ![Parabolic Kepler Equation D](https://latex.codecogs.com/svg.image?D=D/\sqrt{2q})
-    /// > ![Parabolic Kepler Equation M](https://latex.codecogs.com/svg.image?M=qD&plus;(D^3/6))
+    /// > - ![Parabolic Kepler Equation](https://latex.codecogs.com/svg.image?q=p/2&space;)
+    /// > - ![Parabolic Kepler Equation D](https://latex.codecogs.com/svg.image?D=D/\sqrt{2q})
+    /// > - ![Parabolic Kepler Equation M](https://latex.codecogs.com/svg.image?M=qD&plus;(D^3/6))
     ///
     pub fn eccentric(
         self,
@@ -153,17 +153,17 @@ impl Anomaly {
     /// (True Anomaly) Calculates the angle between the periapsis and the body's current position.
     ///
     /// * Elliptical Eccentric Anomaly
-    /// >  ![Elliptical Eccentric Anomaly](https://latex.codecogs.com/svg.image?\nu=2\,\operatorname{arctan}\left(\,{\sqrt{{1&plus;e\,}\over{1-e\,}}}\tan{E\over&space;2}\,\right))
+    /// > - ![Elliptical Eccentric Anomaly](https://latex.codecogs.com/svg.image?\nu=2\,\operatorname{arctan}\left(\,{\sqrt{{1&plus;e\,}\over{1-e\,}}}\tan{E\over&space;2}\,\right))
     ///
     /// * Hyperbolic (Eccentric) Anomaly
-    /// >  ![Hyperbolic Anomaly](https://latex.codecogs.com/svg.image?(\frac{e&plus;1}{e-1})^{1/2}\tanh(\frac{H}{2}))
+    /// > - ![Hyperbolic Anomaly](https://latex.codecogs.com/svg.image?(\frac{e&plus;1}{e-1})^{1/2}\tanh(\frac{H}{2}))
     ///
     /// * Parabolic (Eccentric) Anomaly
-    /// >  ![Parabolic Anomaly](https://latex.codecogs.com/svg.image?D=D/\sqrt{2q})
+    /// > - ![Parabolic Anomaly](https://latex.codecogs.com/svg.image?D=D/\sqrt{2q})
     ///
     /// * Circular (Eccentric) Anomaly
-    /// >  ![Circular Eccentric Anomaly](https://latex.codecogs.com/svg.image?nt=M(t))
-    /// >  ![Circular Eccentric Anomaly](https://latex.codecogs.com/svg.image?M=M_0&plus;nt&space;)
+    /// > - ![Circular Eccentric Anomaly](https://latex.codecogs.com/svg.image?nt=M(t))
+    /// > - ![Circular Eccentric Anomaly](https://latex.codecogs.com/svg.image?M=M_0&plus;nt&space;)
     ///
     pub fn truly(
         self,

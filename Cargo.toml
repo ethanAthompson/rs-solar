@@ -8,6 +8,7 @@ description = "Date-time solutions for hypothetical cosmic calendars"
 homepage = "https://github.com/ethanAthompson/rs-solar"
 categories = ["nasa", "mathematics", "astronomy", "calendar"]
 keywords = ["nasa", "nasa-hunch", "astronomy"]
+documentation = ""
 
 [dependencies]
 chrono = "0.4.31"
