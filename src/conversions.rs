@@ -1,8 +1,8 @@
 /// This function converts astronomical units to kilometers
 ///
-/// > $$1AU = 1.495978707 * 10^{11}
-///
-/// Numbers are according to https://en.wikipedia.org/wiki/Astronomical_unit
+/// > ![Au](https://latex.codecogs.com/svg.image?1AU=1.495978707*10^{11})
+/// 
+/// > Numbers are according to <https://en.wikipedia.org/wiki/Astronomical_unit>
 ///
 /// ### Example Of Venus orbiting average distance (0.723) AU
 ///

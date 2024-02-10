@@ -78,7 +78,7 @@ impl Perihelion {
 pub struct SolarLongitude;
 
 impl SolarLongitude {
-    /// This method computes the ls which should be given by [`kepler::Body`].
+    /// This method computes the ls which should be given by the body.
     /// * The final computation is in *degrees*
     ///
     pub fn compute(
@@ -199,9 +199,8 @@ pub struct MeanMotion;
 impl MeanMotion {
     /// This method abstracts the ability to calculate the mean motion
     ///
-    /// * Mean Motion Equation
-    /// > $$n={\frac {2\pi }{P}}$$
-    ///
+    /// ![Mean Motion Equation](https://latex.codecogs.com/svg.image?n={\frac{2\pi}{P}})
+    /// 
     /// - `n` is the mean motion
     /// - `P` is the orbital period
     pub fn by(&mut self, day: f64, mut peri: Perihelion, orbital_period: f64) -> f64 {

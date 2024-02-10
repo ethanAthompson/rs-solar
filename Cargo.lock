@@ -769,14 +769,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dbb5fb1acd8a1a18b3dd5be62d25485eb770e05afb408a9627d14d451bae12da"
 
 [[package]]
-name = "rust-latex-doc-minimal-example"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "98319ae53ce1c074859b0b71a01023631e13bcabad42b8cae4b82d1711327543"
-
-[[package]]
 name = "rust_solar"
-version = "0.1.80"
+version = "0.1.90"
 dependencies = [
  "chrono",
  "chrono-tz",
@@ -784,7 +778,6 @@ dependencies = [
  "icu",
  "icu_calendar",
  "julian_day_converter",
- "rust-latex-doc-minimal-example",
  "strum",
  "thiserror",
 ]

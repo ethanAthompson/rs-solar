@@ -1,22 +1,15 @@
 # Rust Solar
 
-> A library for cosmic calendars
->
-> Use at your own risk, calculations i've collected may not be accurate to offical calculations.
-
-## Goals
-- [ ] Reduce Interdependency
-    ```rust 
-        use crate::orbit; 
-        instead of 
-        use crate::kepler::calculations::body::orbit
-    ```
-
+A library for cosmic calendars. 
+ 
 ## How to Install?
 
 ```sh
 cargo add rust solar -F asteroids planets moons exoplanets comets
 ```
+
+## Note
+ * This library is compatible with leptos as it's used in [SuperZone](https://superzone.vercel.app/)
 
 ## Supporting Bodies
 
