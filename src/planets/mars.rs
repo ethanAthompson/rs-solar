@@ -6,7 +6,7 @@ use crate::{
 
 use chrono::Datelike;
 use julian_day_converter::JULIAN_DAY_UNIX_EPOCH_DAYS;
-use strum::{AsRefStr, EnumProperty};
+use strum::{AsRefStr, EnumProperty, VariantArray};
 
 use super::EARTH_ROTATIONAL_PERIOD;
 
@@ -14,7 +14,7 @@ use super::EARTH_ROTATIONAL_PERIOD;
 /// This structure represents the fourth planet from the sun
 pub struct Mars;
 
-#[derive(Default, Debug, Copy, Clone, AsRefStr, EnumProperty)]
+#[derive(Default, Debug, Copy, Clone, AsRefStr, EnumProperty, VariantArray)]
 /// This structure represents the martian timezone
 ///
 /// Offset is in 1 decisol, (-2.5 west, +2.5 east)
